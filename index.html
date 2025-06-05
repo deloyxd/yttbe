@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YouTube Thumbnail Editor</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      @font-face {
+        font-family: "Brela";
+        src: url("brela-regular.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>YouTube Thumbnail Editor</h1>
+        <p class="subtitle">
+          Create professional YouTube thumbnails with multiple customizable
+          layers. Upload your images, arrange elements, and download your
+          design.
+        </p>
+      </header>
+
+      <div class="app-container">
+        <div class="preview-section">
+          <h2 class="section-title">
+            <i class="fas fa-eye"></i> Thumbnail Preview
+          </h2>
+
+          <div class="layer-controls">
+            <button class="layer-btn" data-layer="bg-layer">Background</button>
+            <button class="layer-btn" data-layer="character-layer">
+              Character
+            </button>
+            <button class="layer-btn" data-layer="logo-layer">Logo</button>
+            <button class="layer-btn" data-layer="text-layer">Text</button>
+          </div>
+
+          <div class="thumbnail-container" id="thumbnail-container">
+            <div class="layer selected" id="bg-layer" draggable="false">
+              <img
+                src="bg.png"
+                alt="Background"
+                id="bg-image"
+              />
+            </div>
+            <div class="layer" id="character-layer">
+              <img
+                src="character.png"
+                alt="Character"
+                id="character-image"
+              />
+            </div>
+            <div class="layer" id="logo-layer">
+              <img
+                src="logo.png"
+                alt="Logo"
+                id="logo-image"
+              />
+            </div>
+            <div class="layer" id="text-layer">EPIC GAMEPLAY</div>
+          </div>
+          <div class="button-row">
+            <button class="download-btn" id="load-btn">
+              <i class="fas fa-folder-open"></i> Load State
+            </button>
+            <button class="download-btn" id="save-btn">
+              <i class="fas fa-save"></i> Save State
+            </button>
+            <a href="#" class="download-btn" id="download-btn">
+              <i class="fas fa-download"></i> Download Thumbnail
+            </a>
+          </div>
+        </div>
+
+        <div class="editor-section">
+          <h2 class="section-title">
+            <i class="fas fa-sliders-h"></i> Editor Controls
+            <i class="fas fa-refresh refresh-icon"></i>
+          </h2>
+
+          <div class="controls">
+            <div class="control-group" id="help-control-group">
+              <div class="control-group-header">
+                <h3><i class="fas fa-info-circle"></i> How to Use</h3>
+                <div>
+                  <i
+                    class="fas fa-chevron-down toggle-icon"
+                    data-group="help-control-group"
+                  ></i>
+                </div>
+              </div>
+              <div class="control-group-content" id="help-control-content">
+                <ul>
+                  <li>Select a layer using the buttons above the preview</li>
+                  <li>Drag layers to reposition them on the thumbnail</li>
+                  <li>Use the scale controls to resize each component</li>
+                  <li>Upload your own images for each layer</li>
+                  <li>Customize the text content, size, and color</li>
+                  <li>Download your thumbnail when ready</li>
+                </ul>
+              </div>
+            </div>
+            <div class="control-group" id="bg-control-group">
+              <div class="control-group-header">
+                <h3><i class="fas fa-image"></i> Background</h3>
+                <div>
+                  <i
+                    class="fas fa-refresh refresh-icon"
+                    data-group="bg-control-group"
+                  ></i>
+                  <i
+                    class="fas fa-lock lock-icon"
+                    data-group="bg-control-group"
+                  ></i>
+                  <i
+                    class="fas fa-chevron-down toggle-icon"
+                    data-group="bg-control-group"
+                  ></i>
+                </div>
+              </div>
+              <div class="control-group-content" id="bg-control-content">
+                <div class="control">
+                  <label for="bg-upload">Upload Image</label>
+                  <input type="file" id="bg-upload" accept="image/*" />
+                </div>
+                <div class="control">
+                  <label for="bg-scale"
+                    >Scale: <span id="bg-scale-value">100%</span></label
+                  >
+                  <input
+                    type="range"
+                    id="bg-scale"
+                    min="20"
+                    max="200"
+                    value="100"
+                  />
+                </div>
+                <div class="control">
+                  <label for="bg-opacity"
+                    >Opacity: <span id="bg-opacity-value">100%</span></label
+                  >
+                  <input
+                    type="range"
+                    id="bg-opacity"
+                    min="0"
+                    max="100"
+                    value="100"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="control-group" id="character-control-group">
+              <div class="control-group-header">
+                <h3><i class="fas fa-user"></i> Character</h3>
+                <div>
+                  <i
+                    class="fas fa-refresh refresh-icon"
+                    data-group="character-control-group"
+                  ></i>
+                  <i
+                    class="fas fa-lock lock-icon"
+                    data-group="character-control-group"
+                  ></i>
+                  <i
+                    class="fas fa-chevron-down toggle-icon"
+                    data-group="character-control-group"
+                  ></i>
+                </div>
+              </div>
+              <div class="control-group-content" id="character-control-content">
+                <div class="control">
+                  <label for="character-upload">Upload Image</label>
+                  <input type="file" id="character-upload" accept="image/*" />
+                </div>
+                <div class="control">
+                  <label for="character-scale"
+                    >Scale: <span id="character-scale-value">100%</span></label
+                  >
+                  <input
+                    type="range"
+                    id="character-scale"
+                    min="20"
+                    max="200"
+                    value="100"
+                  />
+                </div>
+                <div class="control">
+                  <label for="character-opacity"
+                    >Opacity:
+                    <span id="character-opacity-value">100%</span></label
+                  >
+                  <input
+                    type="range"
+                    id="character-opacity"
+                    min="0"
+                    max="100"
+                    value="100"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="control-group" id="logo-control-group">
+              <div class="control-group-header">
+                <h3><i class="fas fa-crown"></i> Logo</h3>
+                <div>
+                  <i
+                    class="fas fa-refresh refresh-icon"
+                    data-group="logo-control-group"
+                  ></i>
+                  <i
+                    class="fas fa-lock lock-icon"
+                    data-group="logo-control-group"
+                  ></i>
+                  <i
+                    class="fas fa-chevron-down toggle-icon"
+                    data-group="logo-control-group"
+                  ></i>
+                </div>
+              </div>
+              <div class="control-group-content" id="logo-control-content">
+                <div class="control">
+                  <label for="logo-upload">Upload Image</label>
+                  <input type="file" id="logo-upload" accept="image/*" />
+                </div>
+                <div class="control">
+                  <label for="logo-scale"
+                    >Scale: <span id="logo-scale-value">100%</span></label
+                  >
+                  <input
+                    type="range"
+                    id="logo-scale"
+                    min="20"
+                    max="200"
+                    value="100"
+                  />
+                </div>
+                <div class="control">
+                  <label for="logo-opacity"
+                    >Opacity: <span id="logo-opacity-value">100%</span></label
+                  >
+                  <input
+                    type="range"
+                    id="logo-opacity"
+                    min="0"
+                    max="100"
+                    value="100"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="control-group" id="text-control-group">
+              <div class="control-group-header">
+                <h3><i class="fas fa-font"></i> Text</h3>
+                <div>
+                  <i
+                    class="fas fa-refresh refresh-icon"
+                    data-group="text-control-group"
+                  ></i>
+                  <i
+                    class="fas fa-lock lock-icon"
+                    data-group="text-control-group"
+                  ></i>
+                  <i
+                    class="fas fa-chevron-down toggle-icon"
+                    data-group="text-control-group"
+                  ></i>
+                </div>
+              </div>
+              <div class="control-group-content" id="text-control-content">
+                <div class="control">
+                  <label for="text-content">Text Content</label>
+                  <input type="text" id="text-content" value="EPIC GAMEPLAY" />
+                </div>
+                <div class="control">
+                  <label for="text-size"
+                    >Font Size: <span id="text-size-value">48px</span></label
+                  >
+                  <input
+                    type="range"
+                    id="text-size"
+                    min="20"
+                    max="100"
+                    value="48"
+                  />
+                </div>
+                <div class="control">
+                  <label for="text-color">Text Color</label>
+                  <input type="color" id="text-color" value="#ffffff" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <div id="confirmation-dialog" class="dialog-overlay">
+      <div class="dialog-content">
+        <p id="dialog-message"></p>
+        <div class="dialog-buttons">
+          <button id="dialog-confirm-btn" class="download-btn">Confirm</button>
+          <button id="dialog-cancel-btn" class="download-btn cancel-btn">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
