@@ -1,5 +1,6 @@
 // Current selected layer
 let selectedLayer = "bg-layer";
+let selectedReorderLayer = "";
 
 // Store layer positions and transformations
 const layerState = {
@@ -8,6 +9,12 @@ const layerState = {
   "logo-layer": { x: 0, y: 0, scale: 1, opacity: 1 },
   "text-layer": { x: 0, y: 0, scale: 1, opacity: 1 },
 };
+
+const reorderPosition = {
+  "character-layer": 0,
+  "logo-layer": 0,
+  "text-layer": 0,
+}
 
 // Track locked state of control groups
 const lockedGroups = {
@@ -133,13 +140,20 @@ document.addEventListener("DOMContentLoaded", function () {
   // Set up control group toggles
   document.querySelectorAll(".control-group-header").forEach((header) => {
     header.addEventListener("click", function (e) {
-      // Don't toggle if clicking the lock icon
+      // Don't toggle if clicking an icon
+      if (e.target.classList.contains("up-icon")) return;
+      if (e.target.classList.contains("down-icon")) return;
       if (e.target.classList.contains("refresh-icon")) return;
       if (e.target.classList.contains("lock-icon")) return;
 
       const groupId = this.parentElement.id;
       toggleControlGroup(groupId);
     });
+  });
+
+  // Set up reordering buttons
+  document.querySelectorAll(".move-icon").forEach((layer) => {
+    // layer.addEventListener("mousedown", startReorder);
   });
 
   // Set up refresh buttons
@@ -162,9 +176,6 @@ document.addEventListener("DOMContentLoaded", function () {
       toggleLockGroup(groupId);
     });
   });
-
-  // Initially collapse all control groups
-  collapseAllControlGroups();
 
   // Initialize the first layer as selected
   selectLayer("bg-layer");
@@ -190,6 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Select a layer function
 function selectLayer(layerId) {
+  collapseAllControlGroups();
   // Remove selected class from all layers
   document.querySelectorAll(".layer").forEach((layer) => {
     layer.classList.remove("selected");
@@ -217,8 +229,6 @@ let dragStartX, dragStartY;
 let initialX, initialY;
 
 function startDrag(e) {
-  if (e.target.id === "text-layer" && e.target !== e.currentTarget) return;
-
   const layer = e.currentTarget;
   selectLayer(layer.id);
 
@@ -239,6 +249,22 @@ function startDrag(e) {
   e.preventDefault();
 }
 
+function startReorder(e) {
+  const layer = e.currentTarget;
+  selectedReorderLayer = layer.id;
+
+  isDragging = true;
+  dragStartY = e.clientY;
+
+  // Store initial position
+  initialY = reorderPosition[layer.id + '-layer'];
+
+  document.addEventListener("mousemove", reorder);
+  document.addEventListener("mouseup", stopReorder);
+
+  e.preventDefault();
+}
+
 function drag(e) {
   if (!isDragging) return;
 
@@ -251,10 +277,30 @@ function drag(e) {
   updateLayer(selectedLayer);
 }
 
+function reorder(e) {
+  if (!isDragging) return;
+
+  const dy = e.clientY - dragStartY;
+
+  reorderPosition[selectedReorderLayer + '-layer'] = initialY + dy;
+
+  const layer = document.getElementById(selectedReorderLayer + '-control-group');
+  const state = reorderPosition[selectedReorderLayer + '-layer'];
+
+  layer.style.transform = `translate(0px, ${state}px)`;
+}
+
 function stopDrag() {
   isDragging = false;
   document.removeEventListener("mousemove", drag);
   document.removeEventListener("mouseup", stopDrag);
+}
+
+function stopReorder() {
+  reorderLayer(selectedReorderLayer + '-layer', initialY < reorderPosition[selectedReorderLayer + '-layer'] ? "down" : "up");
+  isDragging = false;
+  document.removeEventListener("mousemove", reorder);
+  document.removeEventListener("mouseup", stopReorder);
 }
 
 function resetPosition(layerId) {
@@ -294,13 +340,13 @@ function resetAll() {
 }
 
 function confirmResetAll() {
-    for (layerId in layerState) {
-      layerState[layerId].x = 0;
-      layerState[layerId].y = 0;
-      layerState[layerId].scale = 1;
-      layerState[layerId].opacity = 1;
-      updateLayer(layerId);
-    }
+  for (layerId in layerState) {
+    layerState[layerId].x = 0;
+    layerState[layerId].y = 0;
+    layerState[layerId].scale = 1;
+    layerState[layerId].opacity = 1;
+    updateLayer(layerId);
+  }
 }
 
 // Update layer position and transformation
@@ -522,5 +568,22 @@ function toggleLockGroup(groupId) {
   } else {
     lockIcon.classList.remove("locked");
     expandControlGroup(groupId);
+  }
+}
+
+function reorderLayer(layerId, direction) {
+  const container = document.getElementById("thumbnail-container");
+  const layer = document.getElementById(layerId);
+  const layers = Array.from(container.children);
+  const currentIndex = layers.indexOf(layer);
+
+  if (direction === "up" && currentIndex > 1) {
+    container.insertBefore(layer, layers[currentIndex - 1]);
+    layer.style.zIndex = currentIndex - 1;
+    layers[currentIndex - 1].style.zIndex = currentIndex;
+  } else if (direction === "down" && currentIndex < layers.length - 1) {
+    container.insertBefore(layers[currentIndex + 1], layer);
+    layer.style.zIndex = currentIndex + 1;
+    layers[currentIndex + 1].style.zIndex = currentIndex;
   }
 }

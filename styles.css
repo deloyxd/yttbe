@@ -19,7 +19,7 @@ body {
 
 header {
   text-align: center;
-  padding: 20px 0;
+  padding: 10px 0;
   margin-bottom: 30px;
 }
 
@@ -194,18 +194,15 @@ h1 {
   transition: transform 0.3s ease;
 }
 
-.control-group-header .refresh-icon {
-  margin-right: 20px;
+.control-group-header .icon {
+  margin-left: 20px;
   cursor: pointer;
   color: #aaa;
   transition: color 0.3s ease;
 }
 
-.control-group-header .lock-icon {
-  margin-right: 20px;
-  cursor: pointer;
-  color: #aaa;
-  transition: color 0.3s ease;
+.control-group-header .move-icon {
+  cursor: move;
 }
 
 .control-group-header .lock-icon.locked {

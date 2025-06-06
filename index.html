@@ -45,28 +45,28 @@
           </div>
 
           <div class="thumbnail-container" id="thumbnail-container">
-            <div class="layer selected" id="bg-layer" draggable="false">
+            <div class="layer selected" style="z-index: 0;" id="bg-layer" draggable="false">
               <img
                 src="bg.png"
                 alt="Background"
                 id="bg-image"
               />
             </div>
-            <div class="layer" id="character-layer">
+            <div class="layer" style="z-index: 1;" id="character-layer">
               <img
                 src="character.png"
                 alt="Character"
                 id="character-image"
               />
             </div>
-            <div class="layer" id="logo-layer">
+            <div class="layer" style="z-index: 2;" id="logo-layer">
               <img
                 src="logo.png"
                 alt="Logo"
                 id="logo-image"
               />
             </div>
-            <div class="layer" id="text-layer">EPIC GAMEPLAY</div>
+            <div class="layer" style="z-index: 3;" id="text-layer">EPIC GAMEPLAY</div>
           </div>
           <div class="button-row">
             <button class="download-btn" id="load-btn">
@@ -93,7 +93,7 @@
                 <h3><i class="fas fa-info-circle"></i> How to Use</h3>
                 <div>
                   <i
-                    class="fas fa-chevron-down toggle-icon"
+                    class="fas fa-chevron-down toggle-icon icon"
                     data-group="help-control-group"
                   ></i>
                 </div>
@@ -114,15 +114,15 @@
                 <h3><i class="fas fa-image"></i> Background</h3>
                 <div>
                   <i
-                    class="fas fa-refresh refresh-icon"
+                    class="fas fa-refresh refresh-icon icon"
                     data-group="bg-control-group"
                   ></i>
                   <i
-                    class="fas fa-lock lock-icon"
+                    class="fas fa-lock lock-icon icon"
                     data-group="bg-control-group"
                   ></i>
                   <i
-                    class="fas fa-chevron-down toggle-icon"
+                    class="fas fa-chevron-down toggle-icon icon"
                     data-group="bg-control-group"
                   ></i>
                 </div>
@@ -164,15 +164,21 @@
                 <h3><i class="fas fa-user"></i> Character</h3>
                 <div>
                   <i
-                    class="fas fa-refresh refresh-icon"
+                    class="fas fa-arrows-up-down-left-right move-icon icon"
+                    id="character"
+                    data-group="character-control-group"
+                    data-layer="character-layer"
+                  ></i>
+                  <i
+                    class="fas fa-refresh refresh-icon icon"
                     data-group="character-control-group"
                   ></i>
                   <i
-                    class="fas fa-lock lock-icon"
+                    class="fas fa-lock lock-icon icon"
                     data-group="character-control-group"
                   ></i>
                   <i
-                    class="fas fa-chevron-down toggle-icon"
+                    class="fas fa-chevron-down toggle-icon icon"
                     data-group="character-control-group"
                   ></i>
                 </div>
@@ -215,15 +221,20 @@
                 <h3><i class="fas fa-crown"></i> Logo</h3>
                 <div>
                   <i
-                    class="fas fa-refresh refresh-icon"
+                    class="fas fa-arrows-up-down-left-right move-icon icon"
+                    data-group="character-control-group"
+                    data-layer="character-layer"
+                  ></i>
+                  <i
+                    class="fas fa-refresh refresh-icon icon"
                     data-group="logo-control-group"
                   ></i>
                   <i
-                    class="fas fa-lock lock-icon"
+                    class="fas fa-lock lock-icon icon"
                     data-group="logo-control-group"
                   ></i>
                   <i
-                    class="fas fa-chevron-down toggle-icon"
+                    class="fas fa-chevron-down toggle-icon icon"
                     data-group="logo-control-group"
                   ></i>
                 </div>
@@ -265,15 +276,20 @@
                 <h3><i class="fas fa-font"></i> Text</h3>
                 <div>
                   <i
-                    class="fas fa-refresh refresh-icon"
+                    class="fas fa-arrows-up-down-left-right move-icon icon"
+                    data-group="character-control-group"
+                    data-layer="character-layer"
+                  ></i>
+                  <i
+                    class="fas fa-refresh refresh-icon icon"
                     data-group="text-control-group"
                   ></i>
                   <i
-                    class="fas fa-lock lock-icon"
+                    class="fas fa-lock lock-icon icon"
                     data-group="text-control-group"
                   ></i>
                   <i
-                    class="fas fa-chevron-down toggle-icon"
+                    class="fas fa-chevron-down toggle-icon icon"
                     data-group="text-control-group"
                   ></i>
                 </div>
